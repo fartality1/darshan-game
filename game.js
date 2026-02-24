@@ -48,6 +48,10 @@ canvas.addEventListener("click", jump);
 document.addEventListener("keydown", jump);
 canvas.addEventListener("touchstart", jump);
 
+bg.onload = () => {
+    bg.width = canvas.width;
+    bg.height = canvas.height;
+};
 // Main game loop
 function gameLoop() {
     // Draw background
