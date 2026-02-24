@@ -15,18 +15,18 @@ let jumpSound = new Audio("jump.mp3");
 let hitSound = new Audio("hit.mp3");
 let pointSound = new Audio("point.mp3");
 
-// Bird physics
+// Bird physics (EASY MODE)
 let birdX = 60;
 let birdY = 200;
-let gravity = 0.35;
+let gravity = 0.25;     // LESS gravity → falls slower
 let velocity = 0;
-let jumpForce = -7;
+let jumpForce = -6;      // stronger flap but controlled
 
-// Pipes
+// Pipes (EASY MODE)
 let pipes = [];
-let pipeGap = 150;
+let pipeGap = 190;       // BIGGER GAP → easier to pass
 let pipeWidth = 60;
-let pipeSpeed = 2.2;
+let pipeSpeed = 1.6;     // slower pipes → easy timing
 
 // Score
 let score = 0;
@@ -34,7 +34,7 @@ let score = 0;
 // Add first pipe
 pipes.push({
     x: canvas.width,
-    height: Math.random() * 250 + 50
+    height: Math.random() * 230 + 80  // more fair height
 });
 
 // Jump
@@ -69,7 +69,7 @@ function gameLoop() {
         return location.reload();
     }
 
-    // Pipe Logic
+    // Pipes
     for (let i = 0; i < pipes.length; i++) {
         let pipe = pipes[i];
         pipe.x -= pipeSpeed;
@@ -83,9 +83,9 @@ function gameLoop() {
         // Bottom pipe
         ctx.fillRect(pipe.x, pipe.height + pipeGap, pipeWidth, canvas.height);
 
-        // Collision
-        if (pipe.x < birdX + 40 && pipe.x + pipeWidth > birdX) {
-            if (birdY < pipe.height || birdY + 40 > pipe.height + pipeGap) {
+        // Collision (EASY HITBOX - forgiving)
+        if (pipe.x < birdX + 35 && pipe.x + pipeWidth > birdX + 5) {
+            if (birdY < pipe.height - 10 || birdY + 35 > pipe.height + pipeGap + 10) {
                 hitSound.play();
                 alert("Game Over! Score: " + score);
                 return location.reload();
@@ -100,17 +100,17 @@ function gameLoop() {
         }
 
         // Add new pipe
-        if (pipe.x < canvas.width - 200 && !pipe.added) {
+        if (pipe.x < canvas.width - 220 && !pipe.added) {
             pipes.push({
                 x: canvas.width,
-                height: Math.random() * 250 + 50
+                height: Math.random() * 230 + 80
             });
             pipe.added = true;
         }
     }
 
     // Draw Score
-    ctx.fillStyle = "black";
+    ctx.fillStyle = "white";
     ctx.font = "32px Arial";
     ctx.fillText("Score: " + score, 10, 40);
 
