@@ -1,12 +1,12 @@
-// Canvas setup
+// Canvas
 const canvas = document.getElementById("gameCanvas");
 const ctx = canvas.getContext("2d");
 
-// Background
+// Background FULLSCREEN FIX
 let bg = new Image();
 bg.src = "background.png";
 
-// Bird (your face)
+// Bird
 let bird = new Image();
 bird.src = "face.png";
 
@@ -15,26 +15,25 @@ let jumpSound = new Audio("jump.mp3");
 let hitSound = new Audio("hit.mp3");
 let pointSound = new Audio("point.mp3");
 
-// Bird physics (EASY MODE)
+// SUPER EASY PHYSICS
 let birdX = 60;
 let birdY = 200;
-let gravity = 0.25;     // LESS gravity → falls slower
+let gravity = 0.15;     // VERY slow falling
 let velocity = 0;
-let jumpForce = -6;      // stronger flap but controlled
+let jumpForce = -5;     // softer jump
 
-// Pipes (EASY MODE)
+// SUPER EASY PIPES
 let pipes = [];
-let pipeGap = 190;       // BIGGER GAP → easier to pass
+let pipeGap = 240;      // VERY BIG gap
+let pipeSpeed = 1;      // VERY slow pipes
 let pipeWidth = 60;
-let pipeSpeed = 1.6;     // slower pipes → easy timing
 
-// Score
 let score = 0;
 
-// Add first pipe
+// First pipe
 pipes.push({
-    x: canvas.width,
-    height: Math.random() * 230 + 80  // more fair height
+    x: canvas.width + 150,
+    height: Math.random() * 200 + 100
 });
 
 // Jump
@@ -49,10 +48,10 @@ canvas.addEventListener("click", jump);
 canvas.addEventListener("touchstart", jump);
 document.addEventListener("keydown", jump);
 
-// Main Game Loop
+// Main loop
 function gameLoop() {
 
-    // Draw background
+    // FULLSCREEN BACKGROUND
     ctx.drawImage(bg, 0, 0, canvas.width, canvas.height);
 
     // Bird physics
@@ -62,19 +61,17 @@ function gameLoop() {
     // Draw bird
     ctx.drawImage(bird, birdX, birdY, 40, 40);
 
-    // Check boundaries
-    if (birdY + 40 > canvas.height || birdY < 0) {
+    // Boundaries
+    if (birdY < 0 || birdY + 40 > canvas.height) {
         hitSound.play();
         alert("Game Over! Score: " + score);
         return location.reload();
     }
 
     // Pipes
-    for (let i = 0; i < pipes.length; i++) {
-        let pipe = pipes[i];
+    for (let pipe of pipes) {
         pipe.x -= pipeSpeed;
 
-        // Draw pipes
         ctx.fillStyle = "green";
 
         // Top pipe
@@ -83,9 +80,11 @@ function gameLoop() {
         // Bottom pipe
         ctx.fillRect(pipe.x, pipe.height + pipeGap, pipeWidth, canvas.height);
 
-        // Collision (EASY HITBOX - forgiving)
+        // SUPER EASY HITBOX
         if (pipe.x < birdX + 35 && pipe.x + pipeWidth > birdX + 5) {
-            if (birdY < pipe.height - 10 || birdY + 35 > pipe.height + pipeGap + 10) {
+            if (birdY < pipe.height - 15 ||
+                birdY + 35 > pipe.height + pipeGap + 15) 
+            {
                 hitSound.play();
                 alert("Game Over! Score: " + score);
                 return location.reload();
@@ -94,22 +93,21 @@ function gameLoop() {
 
         // Score
         if (!pipe.passed && pipe.x + pipeWidth < birdX) {
-            score += 1;
+            score++;
             pointSound.play();
             pipe.passed = true;
         }
-
-        // Add new pipe
-        if (pipe.x < canvas.width - 220 && !pipe.added) {
-            pipes.push({
-                x: canvas.width,
-                height: Math.random() * 230 + 80
-            });
-            pipe.added = true;
-        }
     }
 
-    // Draw Score
+    // Add new pipe
+    if (pipes[pipes.length - 1].x < canvas.width - 250) {
+        pipes.push({
+            x: canvas.width,
+            height: Math.random() * 200 + 100
+        });
+    }
+
+    // Draw score
     ctx.fillStyle = "white";
     ctx.font = "32px Arial";
     ctx.fillText("Score: " + score, 10, 40);
