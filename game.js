@@ -83,17 +83,32 @@ function gameOver(){
 
 if(gameOverFlag) return;
 
-gameOverFlag=true;
+gameOverFlag = true;
 
 currentMusic.pause();
 
-gameOverSound.currentTime=0;
+gameOverSound.currentTime = 0;
 gameOverSound.play();
 
+// Dark overlay
+ctx.fillStyle = "rgba(0,0,0,0.6)";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle = "white";
+ctx.textAlign = "center";
+
+ctx.font = "40px Arial";
+ctx.fillText("GAME OVER", canvas.width/2, 250);
+
+ctx.font = "26px Arial";
+ctx.fillText("I wanna tell you one thing👉🏻👈🏻", canvas.width/2, 300);
+
+ctx.font = "22px Arial";
+ctx.fillText("Score: " + score, canvas.width/2, 340);
+
 setTimeout(()=>{
-alert("Game Over! Score: "+score);
 location.reload();
-},1500);
+},3000);
 
 }
 
@@ -178,8 +193,8 @@ if(score===10){
 
 currentMusic.pause();
 
-currentMusic=music2;
-currentMusic.currentTime=0;
+currentMusic = music2;
+currentMusic.currentTime = 0;
 currentMusic.play();
 
 }
