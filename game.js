@@ -30,10 +30,10 @@ let gravity = 0.12;
 let velocity = 0;
 let jumpForce = -4.5;
 
-// Pipes
+// Pipes (harder settings)
 let pipes = [];
-let pipeGap = 260;
-let pipeSpeed = 0.8;
+let pipeGap = 200;   // closer pipes
+let pipeSpeed = 1.4; // faster pipes
 let pipeWidth = 60;
 
 // Game state
@@ -48,7 +48,7 @@ pipes.push({
     height: Math.random() * 200 + 100
 });
 
-// Tap / Jump
+// Jump / Start
 function jump() {
 
     if (!gameStarted) {
@@ -187,7 +187,7 @@ function gameLoop(){
         }
     }
 
-    // Add pipes
+    // Add new pipe
     if(pipes[pipes.length-1].x < canvas.width-250){
 
         pipes.push({
