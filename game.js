@@ -139,7 +139,7 @@ if(paused){
 
 ctx.fillStyle="white";
 ctx.font="28px Arial";
-ctx.fillText("Continue chey ra kojja",60,300);
+ctx.fillText("Continue chey ",60,300);
 
 requestAnimationFrame(gameLoop);
 return;
